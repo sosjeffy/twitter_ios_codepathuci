@@ -12,6 +12,7 @@ class LoginViewController: UIViewController {
     // Action is what you create when you want to do something when action occurs, outlet is when you create something you want to change
     @IBAction func onLoginButton(_ sender: Any) {
         TwitterAPICaller.client?.login(url: "https://api.twitter.com/oauth/request_token", success: {
+            UserDefaults.standard.set(true, forKey: "userLoggedIn")
             self.performSegue(withIdentifier: "loginToHome", sender: self)
         }, failure: { (Error) in
             print("Could not log in")
@@ -23,7 +24,11 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        if UserDefaults.standard.bool(forKey: "userLoggedIn") == true {
+            self.performSegue(withIdentifier: "loginToHome", sender: self)
+        }
+    }
     /*
     // MARK: - Navigation
 
